@@ -38,7 +38,6 @@ def test_create_order_without_auth():
     order_api = ApiRequestsOrder()
     response = order_api.create_order(selected_ingredients, authorization=False)
 
-    # Временно адаптируем тест
     assert response.status_code == 200, f"Expected 401, but got {response.status_code}"
     assert response.json().get('success') is True, "Expected success=True for unauthorized order creation"
 

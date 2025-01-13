@@ -12,6 +12,7 @@ def test_update_user_with_auth(new_user):
 
     response = requests.patch(f"{UrlApi.BASE_URL}/{UrlApi.API_USER}", headers=headers, json=payload)
 
+
     assert response.status_code == 200, f"Expected 200, but got {response.status_code}"
     assert response.json()['user']['name'] == "New Name", "Name was not updated"
 

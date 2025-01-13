@@ -4,7 +4,7 @@ import requests
 class ApiRequestsUser:
     def __init__(self):
         self.base_url = UrlApi.BASE_URL
-        self.token = None  # Токен для последующих запросов
+        self.token = None
 
     def register_new_user(self, email, password, name):
         url = self.base_url + UrlApi.API_REGISTER
@@ -33,4 +33,14 @@ class ApiRequestsUser:
 
     def is_authenticated(self):
         return hasattr(self, 'token') and self.token is not None
+
+    def delete_user(self):
+        if not self.is_authenticated():
+            raise ValueError("User is not authenticated. Login to get a valid token.")
+
+        url = f"{self.base_url}{UrlApi.API_USER}"
+        headers = {'Authorization': f'{self.token}'}
+        response = requests.delete(url, headers=headers)
+
+        return response.json()
 
