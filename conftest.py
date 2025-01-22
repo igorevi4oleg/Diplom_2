@@ -1,7 +1,8 @@
 from helpers.generate import Generate
 from api_requests.api_requests_user import ApiRequestsUser
-import json
 import pytest
+import requests
+from data.url_api import UrlApi
 
 
 @pytest.fixture
@@ -12,25 +13,32 @@ def new_user():
     name = Generate.generate_random_string()
 
     user = ApiRequestsUser()
-    user_info = user.register_new_user(email, password, name)
+    response = user.register_new_user(email, password, name)
 
-    user_info_to_save = {
-        'email': email,
-        'password': password,
-        'name': name
-    }
+    response_json = response.json()
 
-    with open('users.json', 'w') as file:
-        json.dump(user_info_to_save, file)
+    if "accessToken" not in response_json:
+        raise ValueError(f"User registration response does not contain accessToken: {response_json}")
 
-    yield user_info
+    yield response, email, password
 
-    if 'accessToken' in user_info:
-        user.token = user_info['accessToken']
+    if "accessToken" in response_json:
+        user.token = response_json["accessToken"]
         delete_response = user.delete_user()
-        assert delete_response.get('success', False), f"Failed to delete the user: {delete_response.get('message', 'No message')}"
-    else:
-        raise ValueError("Access token not found for user cleanup.")
+
+        assert delete_response.get("success") is True, f"Failed to delete the user: {delete_response.get('message', 'No message')}"
+
+
+
+@pytest.fixture
+def get_ingredients():
+    url = UrlApi.BASE_URL + UrlApi.API_INGREDIENTS
+    response = requests.get(url)
+    response.raise_for_status()
+    return response.json()['data']
+
+
+
 
 
 

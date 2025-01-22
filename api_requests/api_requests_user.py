@@ -7,20 +7,26 @@ class ApiRequestsUser:
         self.token = None
 
     def register_new_user(self, email, password, name):
+
         url = self.base_url + UrlApi.API_REGISTER
         response = requests.post(url, json={'email': email, 'password': password, 'name': name})
-        return response.json()
+        print(f"[REGISTER] {url} | Data: email={email}, password=****, name={name}")
+        print(f"[REGISTER RESPONSE] {response.status_code} | {response.text}")
+        return response
+
 
     def login_user(self, email, password):
+
         url = self.base_url + UrlApi.API_LOGIN
-        response = requests.post(url, json={'email': email, 'password': password})
-        self.response = response
+        payload = {"email": email, "password": password}
+
+        response = requests.post(url, json=payload)
+
         if response.status_code == 200:
-           data = response.json()
-           self.token = data.get('accessToken')
-        else:
-           self.token = None
-        return response.json()
+            self.token = response.json().get('accessToken')
+
+        return response
+
 
     def get_user_info(self):
         if not self.is_authenticated():

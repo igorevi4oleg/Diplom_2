@@ -10,3 +10,6 @@ class Generate:
     @staticmethod
     def generate_mail(length=8):
         return ''.join(random.choice(string.ascii_lowercase) for i in range(length)) + '@rambler.ru'
+
+
+

@@ -4,7 +4,7 @@ import requests
 
 class ApiRequestsOrder:
     def __init__(self, access_token=None):
-        self.base_url = f'{UrlApi.BASE_URL}/{UrlApi.API_ORDER}'
+        self.base_url = UrlApi.BASE_URL + UrlApi.API_ORDER
         self.headers = {'Authorization': access_token} if access_token else {}
 
     def create_order(self, ingredients, authorization=True):
