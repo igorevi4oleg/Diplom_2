@@ -51,6 +51,7 @@ class TestCreateOrders:
         order_api = ApiRequestsOrder(access_token=access_token)
         response = order_api.create_order([])
         assert response.json()['success'] is False
+        assert response.json()['message'] == 'Ingredient ids must be provided'
         assert response.status_code == 400, f"Expected 400, but got {response.status_code}"
 
 

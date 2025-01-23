@@ -15,7 +15,7 @@ class TestCreateUser:
 
         response_json = response.json()
 
-        assert response_json["success"], "User creation was not successful"
+        assert response_json['success'] is True, "User creation was not successful"
         assert "email" in response_json["user"], "User response does not contain email"
         assert response_json["user"]["email"] == email, "Email in response does not match registered email"
 
@@ -28,8 +28,8 @@ class TestCreateUser:
         response_json = response.json()
 
         assert response.status_code == 403, f"Expected 403, but got {response.status_code}"
-        assert not response_json["success"], "User creation should not be successful"
-        assert "message" in response_json, "Response should contain a message"
+        assert response_json['success'] is False
+        assert response_json['message'] == 'User already exists'
 
 
 
@@ -47,7 +47,8 @@ class TestCreateUser:
         response_data = response.json()
 
         assert response.status_code == 403, f"Unexpected status code: {response.status_code}"
-        assert "success" in response_data
+        assert response_data['success'] is False
+        assert response_data['message'] == 'Email, password and name are required fields'
 
 
 

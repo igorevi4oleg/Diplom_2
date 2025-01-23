@@ -26,4 +26,7 @@ class TestUpdateUser:
         response = requests.patch(f"{UrlApi.BASE_URL}{UrlApi.API_USER}", json=payload)
 
         assert response.status_code == 401, f"Expected 401, but got {response.status_code}"
+        assert response.json()['success'] is False
+        assert response.json()['message'] == 'You should be authorised'
+
 

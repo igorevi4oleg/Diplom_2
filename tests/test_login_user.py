@@ -10,6 +10,7 @@ class TestLoginUser:
         user = ApiRequestsUser()
         response = user.login_user("wrong_email_user", "wrong_password_user")
         assert response.json()['success'] is False
+        assert response.json()['message'] == 'email or password are incorrect'
         assert response.status_code == 401, f"Expected status 401, but got {response.status_code}"
 
 
