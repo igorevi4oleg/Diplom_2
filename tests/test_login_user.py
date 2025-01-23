@@ -9,7 +9,7 @@ class TestLoginUser:
     def test_login_with_invalid_credentials(self):
         user = ApiRequestsUser()
         response = user.login_user("wrong_email_user", "wrong_password_user")
-
+        assert response.json()['success'] is False
         assert response.status_code == 401, f"Expected status 401, but got {response.status_code}"
 
 
@@ -18,7 +18,7 @@ class TestLoginUser:
         user_api = ApiRequestsUser()
         response, email, password = new_user
         response = user_api.login_user(email, password)
-
+        assert response.json()['success'] is True
         assert response.status_code == 200, f"Expected 200, but got {response.status_code}"
 
 

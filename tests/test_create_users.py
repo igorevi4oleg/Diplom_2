@@ -19,20 +19,18 @@ class TestCreateUser:
         assert "email" in response_json["user"], "User response does not contain email"
         assert response_json["user"]["email"] == email, "Email in response does not match registered email"
 
-
-
-
-    @allure.title("Create unique user")
-    def test_create_unique_user(self, new_user):
+    @allure.title("Create existing user")
+    def test_create_existing_user(self, new_user):
         response, email, password = new_user
+        user = ApiRequestsUser()
 
-        assert response.status_code == 200, f"Expected 200, but got {response.status_code}"
-
+        response = user.register_new_user(email, password, "test_user")
         response_json = response.json()
 
-        assert response_json["success"], "User creation was not successful"
-        assert "email" in response_json["user"], "User response does not contain email"
-        assert response_json["user"]["email"] == email, "Email in response does not match registered email"
+        assert response.status_code == 403, f"Expected 403, but got {response.status_code}"
+        assert not response_json["success"], "User creation should not be successful"
+        assert "message" in response_json, "Response should contain a message"
+
 
 
 

@@ -24,7 +24,7 @@ class TestCreateOrders:
         selected_ingredients = get_random_ingredients
         order_api = ApiRequestsOrder()
         response = order_api.create_order(selected_ingredients, authorization=False)
-
+        assert response.json()['success'] is True
         assert response.status_code == 200, f"Expected 401, but got {response.status_code}"
         assert response.json().get('success') is True, "Expected success=True for unauthorized order creation"
 
@@ -50,7 +50,7 @@ class TestCreateOrders:
 
         order_api = ApiRequestsOrder(access_token=access_token)
         response = order_api.create_order([])
-
+        assert response.json()['success'] is False
         assert response.status_code == 400, f"Expected 400, but got {response.status_code}"
 
 
@@ -62,7 +62,6 @@ class TestCreateOrders:
         invalid_ingredient_hash = "invalid_hash_value"
         order_api = ApiRequestsOrder(access_token=access_token)
         response = order_api.create_order([invalid_ingredient_hash])
-
         assert response.status_code == 500, f"Expected 500, but got {response.status_code}"
 
 

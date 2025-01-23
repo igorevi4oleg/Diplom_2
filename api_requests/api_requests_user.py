@@ -10,8 +10,6 @@ class ApiRequestsUser:
 
         url = self.base_url + UrlApi.API_REGISTER
         response = requests.post(url, json={'email': email, 'password': password, 'name': name})
-        print(f"[REGISTER] {url} | Data: email={email}, password=****, name={name}")
-        print(f"[REGISTER RESPONSE] {response.status_code} | {response.text}")
         return response
 
 
